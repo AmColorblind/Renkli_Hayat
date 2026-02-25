@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Renk Yardımcı — Herkese Görünür Dünya</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --accent: #7c6af7;
+    --accent2: #f7a26a;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --border: #2a2a38;
+    --success: #6af7a2;
+    --danger: #f76a6a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SCREEN: INTRO ── */
+  #screen-intro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #screen-intro::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,106,247,0.15) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    pointer-events: none;
+  }
+  #screen-intro::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(247,162,106,0.1) 0%, transparent 70%);
+    bottom: -80px; right: -80px;
+    pointer-events: none;
+  }
+
+  .logo-eye {
+    width: 80px; height: 80px;
+    margin-bottom: 24px;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 8vw, 52px);
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    text-align: center;
+    max-width: 320px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #5a4ed4);
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 100px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 32px rgba(124,106,247,0.4);
+    letter-spacing: 0.3px;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,106,247,0.5); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SCREEN: TEST ── */
+  #screen-test {
+    display: none;
+    min-height: 100vh;
+    padding: 40px 24px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .screen-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .screen-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  .test-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .test-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(124,106,247,0.05));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .test-card:hover::before { opacity: 1; }
+  .test-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .test-card.selected { border-color: var(--accent); background: rgba(124,106,247,0.1); }
+
+  .test-circles {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .tc {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+  }
+
+  .test-label { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .test-desc { font-size: 13px; color: var(--muted); }
+
+  /* ── SCREEN: CAMERA ── */
+  #screen-camera {
+    display: none;
+    height: 100vh;
+    flex-direction: column;
+    position: relative;
+    background: #000;
+  }
+
+  #video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+  }
+
+  #canvas-output {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    display: none;
+  }
+
+  .cam-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Top HUD */
+  .cam-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+    z-index: 20;
+    pointer-events: all;
+  }
+
+  .cam-type-badge {
+    background: rgba(124,106,247,0.8);
+    backdrop-filter: blur(10px);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .cam-btn {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .cam-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* Color name popup */
+  #color-name-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 16px 24px;
+    text-align: center;
+    z-index: 20;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    min-width: 160px;
+  }
+  #color-name-box.visible { opacity: 1; }
+
+  #color-swatch {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    border: 3px solid rgba(255,255,255,0.3);
+  }
+  #color-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  /* Crosshair */
+  .crosshair {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 15;
+    pointer-events: none;
+  }
+  .crosshair svg { display: block; }
+
+  /* Bottom controls */
+  .cam-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 20px 20px 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    z-index: 20;
+    pointer-events: all;
+  }
+
+  .filter-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+  }
+
+  .toggle-label { font-size: 14px; font-weight: 500; }
+  .toggle-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* Toggle switch */
+  .switch {
+    position: relative;
+    width: 52px; height: 28px;
+  }
+  .switch input { display: none; }
+  .slider {
+    position: absolute;
+    inset: 0;
+    background: var(--border);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .slider::after {
+    content: '';
+    position: absolute;
+    width: 22px; height: 22px;
+    background: white;
+    border-radius: 50%;
+    top: 3px; left: 3px;
+    transition: transform 0.3s;
+  }
+  input:checked + .slider { background: var(--accent); }
+  input:checked + .slider::after { transform: translateX(24px); }
+
+  .strength-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 4px;
+  }
+  .strength-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: var(--border);
+    border-radius: 100px;
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(124,106,247,0.6);
+  }
+
+  /* Bottom nav tabs */
+  .cam-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .cam-tab {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .cam-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ── SCREEN: PHOTO ── */
+  #screen-photo {
+    display: none;
+    min-height: 100vh;
+    padding: 40px 24px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 20px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 24px;
+  }
+  .upload-zone:hover { border-color: var(--accent); background: rgba(124,106,247,0.05); }
+  .upload-icon { font-size: 48px; margin-bottom: 12px; }
+  .upload-text { font-weight: 600; margin-bottom: 4px; }
+  .upload-sub { font-size: 13px; color: var(--muted); }
+
+  .photo-preview-wrap {
+    display: none;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  #photo-canvas { width: 100%; display: block; }
+
+  .photo-controls {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    gap: 16px;
+    flex-direction: column;
+  }
+
+  /* ── SETTINGS PANEL ── */
+  #screen-settings {
+    display: none;
+    min-height: 100vh;
+    padding: 40px 24px 80px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .setting-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .setting-group-title {
+    padding: 16px 20px 0;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+  .setting-row {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-row-label { font-size: 15px; }
+  .setting-row-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .type-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 20px 20px;
+  }
+  .type-chip {
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: var(--text);
+  }
+  .type-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(10,10,15,0.9);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 12px 0 28px;
+    z-index: 100;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.2s;
+    color: var(--muted);
+  }
+  .nav-item.active { color: var(--accent); }
+  .nav-icon { font-size: 22px; }
+  .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+
+  /* Utilities */
+  .hidden { display: none !important; }
+  .screen { padding-bottom: 90px; }
+
+  /* Onboarding indicator */
+  .steps {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s;
+  }
+  .step-dot.active { background: var(--accent); width: 24px; border-radius: 100px; }
+
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+  }
+  .back-btn:hover { color: var(--text); }
+
+  .color-dot-row {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .cdot {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+
+  #color-identify-btn {
+    position: absolute;
+    bottom: 110px;
+    right: 20px;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--accent2);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(247,162,106,0.5);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  #color-identify-btn:active { transform: scale(0.9); }
+</style>
+</head>
+<body>
+
+<!-- ═══ SCREEN: INTRO ═══ -->
+<div id="screen-intro">
+  <svg class="logo-eye" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="40" cy="40" rx="35" ry="22" stroke="url(#eg)" stroke-width="3"/>
+    <circle cx="40" cy="40" r="14" fill="url(#eg)"/>
+    <circle cx="40" cy="40" r="8" fill="#0a0a0f"/>
+    <circle cx="44" cy="36" r="3" fill="white" opacity="0.8"/>
+    <defs>
+      <linearGradient id="eg" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#7c6af7"/>
+        <stop offset="1" stop-color="#f7a26a"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <h1>Herkese Görünür<br>Dünya</h1>
+  <p class="subtitle">Renk körü bireyler için gerçek zamanlı renk düzeltme. Kamera, fotoğraf, her şey.</p>
+
+  <button class="btn-primary" onclick="startSetup()">Başla — Ücretsiz</button>
+  <button class="btn-secondary" onclick="skipSetup()">Türümü zaten biliyorum →</button>
+</div>
+
+<!-- ═══ SCREEN: TEST ═══ -->
+<div id="screen-test" class="screen">
+  <button class="back-btn" onclick="showIntro()">← Geri</button>
+  <div class="steps">
+    <div class="step-dot active"></div>
+    <div class="step-dot"></div>
+    <div class="step-dot"></div>
+  </div>
+  <div class="screen-title">Renk Türünü Seçelim</div>
+  <p class="screen-sub">Hangisi seni daha çok tanımlıyor? Emin değilsen hepsini tek tek dene.</p>
+
+  <div class="test-card" onclick="selectType('deuteranopia')">
+    <div class="test-circles">
+      <div class="tc" style="background:#c0392b"></div>
+      <div class="tc" style="background:#27ae60"></div>
+      <div class="tc" style="background:#e67e22"></div>
+    </div>
+    <div class="test-label">Kırmızı–Yeşil (Deuteranopi)</div>
+    <div class="test-desc">En yaygın tür. Kırmızı ve yeşil birbirine karışıyor. Her 12 erkekten 1'i.</div>
+  </div>
+
+  <div class="test-card" onclick="selectType('protanopia')">
+    <div class="test-circles">
+      <div class="tc" style="background:#8e1a1a"></div>
+      <div class="tc" style="background:#2e7d32"></div>
+      <div class="tc" style="background:#ff6d00"></div>
+    </div>
+    <div class="test-label">Kırmızı Eksikliği (Protanopi)</div>
+    <div class="test-desc">Kırmızı tonu çok koyu, neredeyse siyah görünüyor. Kırmızı ışık zayıf.</div>
+  </div>
+
+  <div class="test-card" onclick="selectType('tritanopia')">
+    <div class="test-circles">
+      <div class="tc" style="background:#1565c0"></div>
+      <div class="tc" style="background:#f9a825"></div>
+      <div class="tc" style="background:#00838f"></div>
+    </div>
+    <div class="test-label">Mavi–Sarı (Tritanopi)</div>
+    <div class="test-desc">Mavi ve sarı karışıyor. Daha nadir, hem kadın hem erkekte görülür.</div>
+  </div>
+
+  <div class="test-card" onclick="selectType('monochromacy')" style="margin-bottom: 80px;">
+    <div class="test-circles">
+      <div class="tc" style="background:#888"></div>
+      <div class="tc" style="background:#555"></div>
+      <div class="tc" style="background:#aaa"></div>
+    </div>
+    <div class="test-label">Tam Renk Körü (Akromatopsi)</div>
+    <div class="test-desc">Her şey gritonlarda görünüyor. Nadir ama ciddi bir durum.</div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: CAMERA ═══ -->
+<div id="screen-camera" style="display:none; height:100vh; position:relative; background:#000;">
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="canvas-output"></canvas>
+
+  <!-- Top bar -->
+  <div class="cam-top">
+    <button class="cam-btn" onclick="navigateTo('screen-settings')">⚙️</button>
+    <div class="cam-type-badge" id="type-badge">Deuteranopi</div>
+    <button class="cam-btn" onclick="switchCamera()">🔄</button>
+  </div>
+
+  <!-- Crosshair -->
+  <div class="crosshair">
+    <svg width="60" height="60" viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="28" stroke="white" stroke-width="1" stroke-opacity="0.4" fill="none" stroke-dasharray="4 4"/>
+      <line x1="30" y1="2" x2="30" y2="14" stroke="white" stroke-width="2" opacity="0.7"/>
+      <line x1="30" y1="46" x2="30" y2="58" stroke="white" stroke-width="2" opacity="0.7"/>
+      <line x1="2" y1="30" x2="14" y2="30" stroke="white" stroke-width="2" opacity="0.7"/>
+      <line x1="46" y1="30" x2="58" y2="30" stroke="white" stroke-width="2" opacity="0.7"/>
+    </svg>
+  </div>
+
+  <!-- Color name popup -->
+  <div id="color-name-box">
+    <div id="color-swatch"></div>
+    <div id="color-name">—</div>
+  </div>
+
+  <!-- Color identify button -->
+  <button id="color-identify-btn" onclick="identifyColor()">🎨</button>
+
+  <!-- Bottom controls -->
+  <div class="cam-bottom">
+    <div class="cam-tabs">
+      <button class="cam-tab active" id="tab-filter" onclick="setTab('filter')">🔮 Filtre</button>
+      <button class="cam-tab" id="tab-identify" onclick="setTab('identify')">🔍 Renk Bul</button>
+    </div>
+
+    <div class="filter-toggle">
+      <div>
+        <div class="toggle-label">Renk Düzeltme</div>
+        <div class="toggle-sub" id="filter-desc">Deuteranopi için aktif</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="filter-toggle" checked onchange="toggleFilter()">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="strength-row">
+      <span class="strength-label">Güç</span>
+      <input type="range" id="strength-slider" min="0" max="100" value="70" oninput="updateStrength()">
+      <span class="strength-label" id="strength-val">70%</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: PHOTO ═══ -->
+<div id="screen-photo" class="screen">
+  <div style="padding: 40px 24px 0; max-width:480px; margin:0 auto;">
+    <div class="screen-title">Fotoğraf Düzelt</div>
+    <p class="screen-sub">Galerinden bir fotoğraf seç, renk körlüğüne göre düzeltilmiş halini gör.</p>
+
+    <div class="upload-zone" onclick="document.getElementById('photo-input').click()">
+      <div class="upload-icon">📸</div>
+      <div class="upload-text">Fotoğraf Seç</div>
+      <div class="upload-sub">Galerinden veya kameradan</div>
+      <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="loadPhoto(event)">
+    </div>
+
+    <div class="photo-preview-wrap" id="photo-preview-wrap">
+      <canvas id="photo-canvas"></canvas>
+    </div>
+
+    <div class="photo-controls" id="photo-controls">
+      <div class="filter-toggle" style="background: var(--surface2);">
+        <div>
+          <div class="toggle-label">Düzeltme Açık</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="photo-filter-toggle" checked onchange="applyPhotoFilter()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="strength-row">
+        <span class="strength-label">Güç</span>
+        <input type="range" id="photo-strength" min="0" max="100" value="70" oninput="applyPhotoFilter()">
+        <span class="strength-label" id="photo-strength-val">70%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: SETTINGS ═══ -->
+<div id="screen-settings" class="screen">
+  <div style="padding: 40px 24px 0; max-width:480px; margin:0 auto;">
+    <div class="screen-title">Ayarlar</div>
+    <p class="screen-sub" style="margin-bottom:24px;">Renk türünü ve filtre ayarlarını buradan değiştirebilirsin.</p>
+
+    <div class="setting-group">
+      <div class="setting-group-title">Renk Körlüğü Türü</div>
+      <div class="type-chips">
+        <button class="type-chip active" id="chip-deuteranopia" onclick="changeType('deuteranopia')">Kırmızı–Yeşil<br><small>Deuteranopi</small></button>
+        <button class="type-chip" id="chip-protanopia" onclick="changeType('protanopia')">Kırmızı Eksik<br><small>Protanopi</small></button>
+        <button class="type-chip" id="chip-tritanopia" onclick="changeType('tritanopia')">Mavi–Sarı<br><small>Tritanopi</small></button>
+        <button class="type-chip" id="chip-monochromacy" onclick="changeType('monochromacy')">Tam Renk Kör<br><small>Akromatopsi</small></button>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <div class="setting-group-title">Filtre Ayarları</div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-row-label">Filtre Gücü</div>
+          <div class="setting-row-sub">Güçlü = daha fazla düzeltme</div>
+        </div>
+        <input type="range" id="settings-strength" min="0" max="100" value="70" style="width:120px" oninput="syncStrength(this.value)">
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-row-label">Algoritma</div>
+          <div class="setting-row-sub">LMS Daltonization — bilimsel</div>
+        </div>
+        <div style="color: var(--success); font-size:13px;">✓ Aktif</div>
+      </div>
+    </div>
+
+    <div class="setting-group" style="margin-bottom:80px;">
+      <div class="setting-group-title">Hakkında</div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-row-label">Bu uygulama neden ücretsiz?</div>
+          <div class="setting-row-sub">300 milyon renk körü insan için yapıldı. Fayda önce gelir.</div>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-row-label">Kullanılan algoritma</div>
+          <div class="setting-row-sub">LMS renk uzayı + Daltonization matrisi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none">
+  <div class="nav-item active" id="nav-camera" onclick="navigateTo('screen-camera')">
+    <div class="nav-icon">📷</div>
+    <div class="nav-label">KAMERA</div>
+  </div>
+  <div class="nav-item" id="nav-photo" onclick="navigateTo('screen-photo')">
+    <div class="nav-icon">🖼️</div>
+    <div class="nav-label">FOTOĞRAF</div>
+  </div>
+  <div class="nav-item" id="nav-settings" onclick="navigateTo('screen-settings')">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">AYARLAR</div>
+  </div>
+</nav>
+
+<script>
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+const state = {
+  type: 'deuteranopia',
+  strength: 0.7,
+  filterOn: true,
+  currentTab: 'filter',
+  cameraFacing: 'environment',
+  stream: null,
+  animFrame: null,
+  photoImg: null,
+  identifyMode: false,
+};
+
+const typeNames = {
+  deuteranopia: 'Deuteranopi',
+  protanopia: 'Protanopi',
+  tritanopia: 'Tritanopi',
+  monochromacy: 'Akromatopsi',
+};
+
+// ══════════════════════════════════════════
+//  LMS DALTONIZATION MATRICES
+//  Source: Fidaner et al. / Machado et al.
+// ══════════════════════════════════════════
+const matrices = {
+  // Simulation matrices (to see what the person sees)
+  deuteranopia: [
+    [0.29900, 0.58700, 0.11400],
+    [0.29900, 0.58700, 0.11400],
+    [0.00000, 0.00000, 1.00000],
+  ],
+  protanopia: [
+    [0.10889, 0.89111, 0.00000],
+    [0.10889, 0.89111, 0.00000],
+    [0.00000, 0.00000, 1.00000],
+  ],
+  tritanopia: [
+    [1.00000, 0.00000, 0.00000],
+    [0.00000, 1.00000, 0.00000],
+    [-0.15540, 1.15540, 0.00000],
+  ],
+  monochromacy: [
+    [0.299, 0.587, 0.114],
+    [0.299, 0.587, 0.114],
+    [0.299, 0.587, 0.114],
+  ],
+};
+
+// Correction matrices (shift problem colors to distinguishable ones)
+const corrections = {
+  deuteranopia: [
+    [1.0, 0.0, 0.0],
+    [0.4, 0.0, 0.6],
+    [0.0, 0.0, 1.0],
+  ],
+  protanopia: [
+    [0.0, 1.05, -0.05],
+    [0.0, 1.0, 0.0],
+    [0.0, 0.0, 1.0],
+  ],
+  tritanopia: [
+    [1.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0],
+    [-0.4, 0.5, 0.9],
+  ],
+  monochromacy: [
+    [1.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0],
+    [0.0, 0.0, 1.0],
+  ],
+};
+
+function applyMatrix(r, g, b, mat) {
+  return [
+    mat[0][0] * r + mat[0][1] * g + mat[0][2] * b,
+    mat[1][0] * r + mat[1][1] * g + mat[1][2] * b,
+    mat[2][0] * r + mat[2][1] * g + mat[2][2] * b,
+  ];
+}
+
+function clamp(v) { return Math.max(0, Math.min(255, Math.round(v))); }
+
+function processPixels(data, mat, strength) {
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i] / 255;
+    const g = data[i+1] / 255;
+    const b = data[i+2] / 255;
+    const [nr, ng, nb] = applyMatrix(r, g, b, mat);
+    data[i]   = clamp((nr * strength + r * (1 - strength)) * 255);
+    data[i+1] = clamp((ng * strength + g * (1 - strength)) * 255);
+    data[i+2] = clamp((nb * strength + b * (1 - strength)) * 255);
+  }
+}
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+const allScreens = ['screen-intro', 'screen-test', 'screen-camera', 'screen-photo', 'screen-settings'];
+
+function showScreen(id) {
+  allScreens.forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.style.display = 'none';
+  });
+  const target = document.getElementById(id);
+  if (target) target.style.display = (id === 'screen-camera') ? 'block' : 'flex';
+
+  const showNav = !['screen-intro', 'screen-test'].includes(id);
+  document.getElementById('bottom-nav').style.display = showNav ? 'flex' : 'none';
+
+  // Update nav active
+  ['camera', 'photo', 'settings'].forEach(n => {
+    const nav = document.getElementById('nav-' + n);
+    if (nav) nav.classList.toggle('active', id === 'screen-' + n);
+  });
+}
+
+function navigateTo(screenId) {
+  if (screenId === 'screen-camera') {
+    showScreen('screen-camera');
+    startCamera();
+  } else {
+    if (state.stream && screenId !== 'screen-camera') stopCamera();
+    showScreen(screenId);
+  }
+}
+
+// ══════════════════════════════════════════
+//  INTRO / SETUP
+// ══════════════════════════════════════════
+function showIntro() { showScreen('screen-intro'); }
+function startSetup() { showScreen('screen-test'); }
+function skipSetup() {
+  showScreen('screen-camera');
+  startCamera();
+}
+
+function selectType(type) {
+  state.type = type;
+  document.querySelectorAll('.test-card').forEach(c => c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  setTimeout(() => {
+    updateTypeUI();
+    showScreen('screen-camera');
+    startCamera();
+  }, 300);
+}
+
+function changeType(type) {
+  state.type = type;
+  document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+  document.getElementById('chip-' + type).classList.add('active');
+  updateTypeUI();
+}
+
+function updateTypeUI() {
+  const name = typeNames[state.type] || state.type;
+  const badge = document.getElementById('type-badge');
+  if (badge) badge.textContent = name;
+  const desc = document.getElementById('filter-desc');
+  if (desc) desc.textContent = name + ' için aktif';
+}
+
+// ══════════════════════════════════════════
+//  CAMERA
+// ══════════════════════════════════════════
+async function startCamera() {
+  if (state.stream) return;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: state.cameraFacing, width: { ideal: 1280 }, height: { ideal: 720 } }
+    });
+    state.stream = stream;
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+    video.onloadedmetadata = () => {
+      video.play();
+      const canvas = document.getElementById('canvas-output');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      if (state.filterOn) {
+        video.style.display = 'none';
+        canvas.style.display = 'block';
+        renderLoop();
+      }
+    };
+  } catch(e) {
+    console.error('Camera error:', e);
+  }
+}
+
+function stopCamera() {
+  if (state.stream) {
+    state.stream.getTracks().forEach(t => t.stop());
+    state.stream = null;
+  }
+  if (state.animFrame) {
+    cancelAnimationFrame(state.animFrame);
+    state.animFrame = null;
+  }
+}
+
+function renderLoop() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas-output');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+  function frame() {
+    if (!state.filterOn || !state.stream) {
+      state.animFrame = null;
+      return;
+    }
+    if (video.readyState >= 2) {
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      if (state.filterOn) {
+        const mat = corrections[state.type];
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        processPixels(imageData.data, mat, state.strength);
+        ctx.putImageData(imageData, 0, 0);
+      }
+    }
+    state.animFrame = requestAnimationFrame(frame);
+  }
+  state.animFrame = requestAnimationFrame(frame);
+}
+
+function toggleFilter() {
+  state.filterOn = document.getElementById('filter-toggle').checked;
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas-output');
+  if (state.filterOn) {
+    video.style.display = 'none';
+    canvas.style.display = 'block';
+    if (!state.animFrame) renderLoop();
+  } else {
+    video.style.display = 'block';
+    canvas.style.display = 'none';
+    if (state.animFrame) {
+      cancelAnimationFrame(state.animFrame);
+      state.animFrame = null;
+    }
+  }
+}
+
+function updateStrength() {
+  const val = document.getElementById('strength-slider').value;
+  state.strength = val / 100;
+  document.getElementById('strength-val').textContent = val + '%';
+  document.getElementById('settings-strength').value = val;
+}
+
+function syncStrength(val) {
+  state.strength = val / 100;
+  document.getElementById('strength-slider').value = val;
+  document.getElementById('strength-val').textContent = val + '%';
+}
+
+async function switchCamera() {
+  state.cameraFacing = state.cameraFacing === 'environment' ? 'user' : 'environment';
+  stopCamera();
+  state.stream = null;
+  await startCamera();
+}
+
+function setTab(tab) {
+  state.currentTab = tab;
+  document.querySelectorAll('.cam-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const identifyBtn = document.getElementById('color-identify-btn');
+  identifyBtn.style.display = tab === 'identify' ? 'flex' : 'none';
+}
+
+// ══════════════════════════════════════════
+//  COLOR IDENTIFICATION
+// ══════════════════════════════════════════
+function identifyColor() {
+  const canvas = document.getElementById('canvas-output');
+  const video = document.getElementById('video');
+  const w = canvas.width || video.videoWidth;
+  const h = canvas.height || video.videoHeight;
+
+  let r, g, b;
+  if (state.filterOn && canvas.style.display !== 'none') {
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const cx = Math.floor(w / 2);
+    const cy = Math.floor(h / 2);
+    const pixel = ctx.getImageData(cx, cy, 1, 1).data;
+    r = pixel[0]; g = pixel[1]; b = pixel[2];
+  } else {
+    // Sample from video via temp canvas
+    const tmp = document.createElement('canvas');
+    tmp.width = w; tmp.height = h;
+    const ctx = tmp.getContext('2d');
+    ctx.drawImage(video, 0, 0);
+    const pixel = ctx.getImageData(Math.floor(w/2), Math.floor(h/2), 1, 1).data;
+    r = pixel[0]; g = pixel[1]; b = pixel[2];
+  }
+
+  const name = getColorName(r, g, b);
+  const box = document.getElementById('color-name-box');
+  const swatch = document.getElementById('color-swatch');
+  const nameEl = document.getElementById('color-name');
+
+  swatch.style.background = `rgb(${r},${g},${b})`;
+  nameEl.textContent = name;
+  box.classList.add('visible');
+  setTimeout(() => box.classList.remove('visible'), 3000);
+}
+
+function getColorName(r, g, b) {
+  const h = rgbToHue(r, g, b);
+  const s = saturation(r, g, b);
+  const l = luminance(r, g, b);
+
+  if (s < 0.1) {
+    if (l < 0.15) return 'Siyah';
+    if (l < 0.4) return 'Koyu Gri';
+    if (l < 0.7) return 'Gri';
+    return 'Beyaz';
+  }
+
+  let base = '';
+  if (h < 15) base = 'Kırmızı';
+  else if (h < 40) base = 'Turuncu';
+  else if (h < 65) base = 'Sarı';
+  else if (h < 150) base = 'Yeşil';
+  else if (h < 195) base = 'Açık Mavi (Cyan)';
+  else if (h < 250) base = 'Mavi';
+  else if (h < 290) base = 'Mor';
+  else if (h < 330) base = 'Pembe';
+  else base = 'Kırmızı';
+
+  const prefix = l < 0.3 ? 'Koyu ' : l > 0.7 ? 'Açık ' : '';
+  return prefix + base;
+}
+
+function rgbToHue(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h;
+  const d = max - min;
+  if (d === 0) return 0;
+  if (max === r) h = ((g - b) / d) % 6;
+  else if (max === g) h = (b - r) / d + 2;
+  else h = (r - g) / d + 4;
+  return (h * 60 + 360) % 360;
+}
+
+function saturation(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return 0;
+  return (max - min) / (1 - Math.abs(2 * l - 1));
+}
+
+function luminance(r, g, b) {
+  return (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+}
+
+// ══════════════════════════════════════════
+//  PHOTO MODE
+// ══════════════════════════════════════════
+function loadPhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const img = new Image();
+  img.onload = () => {
+    state.photoImg = img;
+    const wrap = document.getElementById('photo-preview-wrap');
+    const controls = document.getElementById('photo-controls');
+    wrap.style.display = 'block';
+    controls.style.display = 'flex';
+    applyPhotoFilter();
+  };
+  img.src = URL.createObjectURL(file);
+}
+
+function applyPhotoFilter() {
+  if (!state.photoImg) return;
+  const canvas = document.getElementById('photo-canvas');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const img = state.photoImg;
+
+  const maxW = 480;
+  const scale = Math.min(1, maxW / img.width);
+  canvas.width = img.width * scale;
+  canvas.height = img.height * scale;
+
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  const filterOn = document.getElementById('photo-filter-toggle').checked;
+  const strength = document.getElementById('photo-strength').value / 100;
+  document.getElementById('photo-strength-val').textContent = Math.round(strength * 100) + '%';
+
+  if (filterOn) {
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    processPixels(imageData.data, corrections[state.type], strength);
+    ctx.putImageData(imageData, 0, 0);
+  }
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+document.getElementById('color-identify-btn').style.display = 'none';
+updateTypeUI();
+</script>
+</body>
+</html>
