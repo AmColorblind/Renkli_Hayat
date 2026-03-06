@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A0A0F"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🌈 Renkli Hayat"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#E8E8F0"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Renk körü bireyler için sistem geneli renk düzeltme"
+            android:textSize="14sp"
+            android:textColor="#6B6B80"
+            android:layout_marginBottom="32dp"/>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="⭕ Filtre Kapalı"
+            android:textSize="18sp"
+            android:textColor="#E8E8F0"
+            android:background="#111118"
+            android:padding="20dp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btn_accessibility"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Erişilebilirlik Ayarlarını Aç"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:backgroundTint="#7C6AF7"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RENK KÖRLÜĞÜ TÜRÜ"
+            android:textSize="11sp"
+            android:textColor="#6B6B80"
+            android:layout_marginBottom="12dp"/>
+
+        <RadioGroup
+            android:id="@+id/rg_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#111118"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/rb_deuteranopia"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Kırmızı–Yeşil (Deuteranopi) — En yaygın"
+                android:textColor="#E8E8F0"
+                android:buttonTint="#7C6AF7"
+                android:checked="true"
+                android:textSize="14sp"/>
+
+            <RadioButton
+                android:id="@+id/rb_protanopia"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Kırmızı Eksik (Protanopi)"
+                android:textColor="#E8E8F0"
+                android:buttonTint="#7C6AF7"
+                android:textSize="14sp"/>
+
+            <RadioButton
+                android:id="@+id/rb_tritanopia"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Mavi–Sarı (Tritanopi)"
+                android:textColor="#E8E8F0"
+                android:buttonTint="#7C6AF7"
+                android:textSize="14sp"/>
+
+            <RadioButton
+                android:id="@+id/rb_monochromacy"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Tam Renk Körü (Akromatopsi)"
+                android:textColor="#E8E8F0"
+                android:buttonTint="#7C6AF7"
+                android:textSize="14sp"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FİLTRE GÜCÜ"
+            android:textSize="11sp"
+            android:textColor="#6B6B80"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#111118"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <SeekBar
+                android:id="@+id/sb_strength"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="70"
+                android:progressTint="#7C6AF7"
+                android:thumbTint="#7C6AF7"/>
+
+            <TextView
+                android:id="@+id/tv_strength"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="70%"
+                android:textColor="#6B6B80"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Filtreyi Aç"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:backgroundTint="#7C6AF7"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GPL v3 — İnsanlığa açık, kimse sahip çıkamaz. 🤲"
+            android:textSize="12sp"
+            android:textColor="#6B6B80"
+            android:gravity="center"
+            android:layout_marginBottom="40dp"/>
+
+    </LinearLayout>
+</ScrollView>
