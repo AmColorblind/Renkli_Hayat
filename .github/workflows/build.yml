@@ -11,16 +11,16 @@ jobs:
     
     steps:
     - name: Kodu indir
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Java 17 kur
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Android SDK kur
-      uses: android-actions/setup-android@v2
+    - name: Gradle cache
+      uses: gradle/actions/setup-gradle@v3
 
     - name: Gradle izinleri ver
       run: chmod +x gradlew
@@ -29,7 +29,7 @@ jobs:
       run: ./gradlew assembleDebug
 
     - name: APK yayınla
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: RenkliHayat-v1.0
         path: app/build/outputs/apk/debug/app-debug.apk
