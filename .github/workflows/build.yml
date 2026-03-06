@@ -1,0 +1,35 @@
+name: Android APK Build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Kodu indir
+      uses: actions/checkout@v3
+
+    - name: Java 17 kur
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Android SDK kur
+      uses: android-actions/setup-android@v2
+
+    - name: Gradle izinleri ver
+      run: chmod +x gradlew
+
+    - name: APK derle
+      run: ./gradlew assembleDebug
+
+    - name: APK yayınla
+      uses: actions/upload-artifact@v3
+      with:
+        name: RenkliHayat-v1.0
+        path: app/build/outputs/apk/debug/app-debug.apk
