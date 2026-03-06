@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Renkli Hayat</string>
+    <string name="accessibility_description">Renkli Hayat — Renk körü bireyler için sistem geneli renk düzeltme filtresi</string>
+    <string name="btn_enable">Filtreyi Aç</string>
+    <string name="btn_disable">Filtreyi Kapat</string>
+    <string name="type_deut">Kırmızı–Yeşil (Deuteranopi)</string>
+    <string name="type_prot">Kırmızı Eksik (Protanopi)</string>
+    <string name="type_trit">Mavi–Sarı (Tritanopi)</string>
+    <string name="type_mono">Tam Renk Körü (Akromatopsi)</string>
+    <string name="strength">Filtre Gücü</string>
+    <string name="open_settings">Erişilebilirlik Ayarlarını Aç</string>
+    <string name="status_on">🟢 Filtre Aktif</string>
+    <string name="status_off">⭕ Filtre Kapalı</string>
+    <string name="permission_needed">Sistem geneli filtre için Erişilebilirlik iznine ihtiyaç var.</string>
+</resources>
