@@ -18,10 +18,11 @@ public class ColorOverlayView extends View {
     public void setPaint(Paint paint) {
         this.overlayPaint = paint;
         setLayerType(LAYER_TYPE_HARDWARE, overlayPaint);
+        invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawPaint(overlayPaint);
+        // Boş bırak — layer paint her şeyi halleder
     }
 }
