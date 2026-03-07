@@ -7,22 +7,25 @@ import android.view.View;
 
 public class ColorOverlayView extends View {
 
-    private Paint overlayPaint;
+    private Paint overlayPaint = new Paint();
 
     public ColorOverlayView(Context context) {
         super(context);
-        overlayPaint = new Paint();
-        setLayerType(LAYER_TYPE_HARDWARE, overlayPaint);
+        setWillNotDraw(false);
     }
 
     public void setPaint(Paint paint) {
         this.overlayPaint = paint;
-        setLayerType(LAYER_TYPE_HARDWARE, overlayPaint);
         invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // Boş bırak — layer paint her şeyi halleder
+        super.onDraw(canvas);
+        int w = getWidth();
+        int h = getHeight();
+        if (w > 0 && h > 0) {
+            canvas.drawRect(0, 0, w, h, overlayPaint);
+        }
     }
 }
