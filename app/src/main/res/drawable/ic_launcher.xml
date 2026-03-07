@@ -1,8 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <gradient
-        android:startColor="#7C6AF7"
-        android:endColor="#F7A26A"
-        android:angle="135"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Koyu arka plan -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#0A0A0F"/>
+        </shape>
+    </item>
+
+    <!-- Gri yarım daire — renk körü göz -->
+    <item
+        android:top="16dp"
+        android:bottom="32dp"
+        android:left="12dp"
+        android:right="12dp">
+        <shape android:shape="oval">
+            <stroke android:width="5dp" android:color="#4a4a5a"/>
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- Kırmızı nokta -->
+    <item
+        android:top="38dp"
+        android:bottom="18dp"
+        android:left="14dp"
+        android:right="42dp">
+        <shape android:shape="oval">
+            <solid android:color="#E53935"/>
+        </shape>
+    </item>
+
+    <!-- Yeşil nokta -->
+    <item
+        android:top="38dp"
+        android:bottom="18dp"
+        android:left="28dp"
+        android:right="28dp">
+        <shape android:shape="oval">
+            <solid android:color="#43A047"/>
+        </shape>
+    </item>
+
+    <!-- Mavi nokta -->
+    <item
+        android:top="38dp"
+        android:bottom="18dp"
+        android:left="42dp"
+        android:right="14dp">
+        <shape android:shape="oval">
+            <solid android:color="#1E88E5"/>
+        </shape>
+    </item>
+
+</layer-list>
